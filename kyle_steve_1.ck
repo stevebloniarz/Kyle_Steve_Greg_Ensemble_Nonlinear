@@ -18,6 +18,8 @@ int counter;
 //20 => rhode.lfoSpeed;
 //0.5 => rhode.lfoDepth;
 
+////////ADSR ENVELOPE PARAMETERS////////
+
 500::ms => dur attack;
 200::ms => dur decay;
 0.65 => float sustain;
@@ -28,6 +30,8 @@ adsr.set(attack, decay, sustain, release);
 ////////OUR SCALE/////////
 
 [60,61,62,63,64,65,66,67] @=> int myscale[];
+
+75::ms = dur noteLength;
 
 ////////OUR FUNCTIONALITY////////
 
@@ -48,7 +52,7 @@ while(true){
 			
 			adsr.keyOn();
 			
-			100::ms => now;
+			noteLength => now;
 			
 			adsr.keyOff();
 			
@@ -60,7 +64,7 @@ while(true){
 			
 			adsr.keyOn();
 			
-			100::ms => now;
+			noteLength => now;
 			
 			adsr.keyOff();
 		}
@@ -71,23 +75,11 @@ while(true){
 			
 			adsr.keyOn();
 			
-			100::ms => now;
+			noteLength => now;
 			
 			adsr.keyOff();
 		}
-		else if (playtog == 4)
-		{
-		
-			Std.mtof(myscale[3]) => rhode.freq;
-			0.5 => rhode.noteOn;
-			
-			adsr.keyOn();
-			
-			100::ms => now;
-			
-			adsr.keyOff();
-			
-		}
+
 		1::ms => now;
 	}
 	
