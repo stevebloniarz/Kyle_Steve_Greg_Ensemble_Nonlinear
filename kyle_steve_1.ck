@@ -4,9 +4,9 @@ OscIn oin;
 // create our OSC message
 OscMsg msg;
 // use port 6449
-12322 => oin.port;
+6666 => oin.port;
 // create an address in the receiver
-oin.addAddress( "/1/push1, f" );
+oin.addAddress( "/playerNumber, f" );
 
 0 => float playtog;
 
@@ -31,7 +31,7 @@ adsr.set(attack, decay, sustain, release);
 
 [60,61,62,63,64,65,66,67] @=> int myscale[];
 
-75::ms = dur noteLength;
+75::ms => dur noteLength;
 
 ////////OUR FUNCTIONALITY////////
 
@@ -45,7 +45,7 @@ while(true){
 		
 		
 		//depending on the value in the message recieved, play the note in the array
-		if( playtog == 1 )
+		if( playtog == 1.0 )
 		{
 			Std.mtof(myscale[0]) => rhode.freq;
 			0.5 => rhode.noteOn;
@@ -57,9 +57,9 @@ while(true){
 			adsr.keyOff();
 			
 		} 
-		else if (playtog == 2)
+		else if (playtog == 2.0)
 		{
-			Stf.mtof(myscale[1]) => rhode.freq;
+			Std.mtof(myscale[2]) => rhode.freq;
 			0.5 => rhode.noteOn;
 			
 			adsr.keyOn();
@@ -68,9 +68,9 @@ while(true){
 			
 			adsr.keyOff();
 		}
-		else if (playtog == 3)
+		else if (playtog == 3.0)
 		{
-			Std.mtof(myscale[2]) => rhode.freq;
+			Std.mtof(myscale[4]) => rhode.freq;
 			0.5 => rhode.noteOn;
 			
 			adsr.keyOn();
