@@ -66,6 +66,7 @@
      <Compile Include="Assets\Scripts\Rotator.cs" />
      <Compile Include="Assets\Scripts\UDPReceive.cs" />
      <Compile Include="Assets\Scripts\UDPSend.cs" />
+     <Compile Include="Assets\Speed_Display.cs" />
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>C:/Users/everek/Documents/GameTime/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
