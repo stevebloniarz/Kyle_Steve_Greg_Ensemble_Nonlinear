@@ -1,4 +1,4 @@
-//////// INST 1 = RHODES ////////
+//////// INST 1 = sinS ////////
 ////////OSC CONFIG////////
 OscIn oin;
 // create our OSC message
@@ -13,36 +13,39 @@ oin.addAddress( "/playerNumber, f" );
 
 fun void inst(int note){
 	////////INSTRUMENT PARAMETERS/////////
-	Rhodey rhode => ADSR adsr => dac;
+	SinOsc sin => ADSR adsr => dac;
 	
 	int counter;
-	0.8 => rhode.gain;
-	//20 => rhode.lfoSpeed;
-	//0.5 => rhode.lfoDepth;
+	0.3 => sin.gain;
+	//20 => sin.lfoSpeed;
+	//0.5 => sin.lfoDepth;
 	
 	////////ADSR ENVELOPE PARAMETERS////////
 	
 	500::ms => dur attack;
 	200::ms => dur decay;
 	0.65 => float sustain;
-	2000::ms => dur release;
+	1000::ms => dur release;
 	
 	adsr.set(attack, decay, sustain, release);
 	
 	////////OUR SCALE/////////
 	
-	[60,64,67] @=> int myscale[];
+	[52,59,68,62,78,72] @=> int myscale[];
 	
 	1500::ms => dur noteLength;
 	
-	Std.mtof(myscale[note]) => rhode.freq;
-	0.5 => rhode.noteOn;
+	Std.mtof(myscale[note] - 24) => sin.freq;
+	//0.5 => sin.noteOn;
 	
 	adsr.keyOn();
 	
-	noteLength => now;
 	
+	//sin.noteOff();
+	700::ms => now;
+	//sin.noteOff();
 	adsr.keyOff();
+	1000::ms => now;
 }
 
 ////////OUR FUNCTIONALITY////////
@@ -57,19 +60,19 @@ while(true){
 		
 		
 		//depending on the value in the message recieved, play the note in the array
-		if( playtog == 1 )
+		if( playtog == 10 )
 		{
 			spork ~ inst(0);
 		} 
-		else if (playtog == 2)
+		else if (playtog == 11)
 		{
 			spork ~ inst(1);
 		}
-		else if (playtog == 3)
+		else if (playtog == 12)
 		{
 			spork ~ inst(2);
 		}
-
+		
 		1::ms => now;
 	}
 	
@@ -80,8 +83,8 @@ while(true){
 
 ////////CODE TO LOOP THRU THE SCALE FOR SAVEKEEPING////////
 
-Std.mtof(myscale[counter]) => rhode.freq;
-0.5 => rhode.noteOn;
+Std.mtof(myscale[counter]) => sin.freq;
+0.5 => sin.noteOn;
 adsr.keyOn();
 
 100::ms => now;

@@ -31,7 +31,7 @@ fun void inst(int note){
 	
 	////////OUR SCALE/////////
 	
-	[60,64,67] @=> int myscale[];
+	[52,59,68,62,78,72] @=> int myscale[];
 	
 	1500::ms => dur noteLength;
 	

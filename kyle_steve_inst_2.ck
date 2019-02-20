@@ -1,4 +1,4 @@
-//////// INST 1 = RHODES ////////
+//////// INST 2 = Wurley ////////
 ////////OSC CONFIG////////
 OscIn oin;
 // create our OSC message
@@ -13,36 +13,55 @@ oin.addAddress( "/playerNumber, f" );
 
 fun void inst(int note){
 	////////INSTRUMENT PARAMETERS/////////
-	Rhodey rhode => ADSR adsr => dac;
+	Wurley wurl => dac;
+	
 	
 	int counter;
-	0.8 => rhode.gain;
-	//20 => rhode.lfoSpeed;
-	//0.5 => rhode.lfoDepth;
+	0.5 => wurl.gain;
+	0.80 => wurl.afterTouch;
+	0.2 => wurl.controlOne;
+	0.15 => wurl.controlTwo;
+	//9=> wurl.lfoSpeed;
+	//0.25=> wurl.lfoDepth;
+	
+	//2 => wurl.phonemeNum;
+	//1.0 => wurl.voiceMix;
+	//10 => wurl.vibratoFreq;
 	
 	////////ADSR ENVELOPE PARAMETERS////////
 	
-	500::ms => dur attack;
-	200::ms => dur decay;
-	0.65 => float sustain;
-	2000::ms => dur release;
+	//500::ms => dur attack;
+	//200::ms => dur decay;
+	//0.65 => float sustain;
+	//2000::ms => dur release;
 	
-	adsr.set(attack, decay, sustain, release);
+	//adsr.set(attack, decay, sustain, release);
 	
 	////////OUR SCALE/////////
 	
-	[60,64,67] @=> int myscale[];
+	[52,59,68,62,78,72] @=> int myscale[];
 	
-	1500::ms => dur noteLength;
+	5000::ms => dur noteLength;
 	
-	Std.mtof(myscale[note]) => rhode.freq;
-	0.5 => rhode.noteOn;
+	Std.mtof(myscale[note]+12) => wurl.freq;
+	0.5 => wurl.noteOn;
 	
-	adsr.keyOn();
+	0 => int i;
+	
+/*
+	while (i < 3)
+	{
+		Std.mtof(myscale[(note+i)%3]) => wurl.freq;
+		10::ms => now;
+		i + 1 => i;
+	}
+*/
+	
+	//adsr.keyOn();
 	
 	noteLength => now;
 	
-	adsr.keyOff();
+	//adsr.keyOff();
 }
 
 ////////OUR FUNCTIONALITY////////
@@ -57,19 +76,19 @@ while(true){
 		
 		
 		//depending on the value in the message recieved, play the note in the array
-		if( playtog == 1 )
+		if( playtog == 4 )
 		{
 			spork ~ inst(0);
 		} 
-		else if (playtog == 2)
+		else if (playtog == 5)
 		{
 			spork ~ inst(1);
 		}
-		else if (playtog == 3)
+		else if (playtog == 6)
 		{
 			spork ~ inst(2);
 		}
-
+		
 		1::ms => now;
 	}
 	
@@ -80,8 +99,8 @@ while(true){
 
 ////////CODE TO LOOP THRU THE SCALE FOR SAVEKEEPING////////
 
-Std.mtof(myscale[counter]) => rhode.freq;
-0.5 => rhode.noteOn;
+Std.mtof(myscale[counter]) => wurl.freq;
+0.5 => wurl.noteOn;
 adsr.keyOn();
 
 100::ms => now;
