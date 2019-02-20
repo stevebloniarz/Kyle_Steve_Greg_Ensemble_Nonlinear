@@ -4,7 +4,7 @@ OscIn oin;
 // create our OSC message
 OscMsg msg;
 // use port 6449
-6449 => oin.port;
+6666 => oin.port;
 // create an address in the receiver
 oin.addAddress( "/playerNumber, f" );
 
@@ -14,13 +14,16 @@ oin.addAddress( "/playerNumber, f" );
 SndBuf buf1;
 SndBuf buf2;
 SndBuf buf3;
+
+0.5 => buf2.gain;
+
 buf1 => dac;
 buf2 => dac;
 buf3 => dac;
 
-"/Users/apple/Documents_Local/RPI/Spring2019/EnsembleNonlinear/KyleSteveGreg/Kyle_Steve_Greg_Ensemble_Nonlinear/samples/hat.wav" => buf1.read;
-"/Users/apple/Documents_Local/RPI/Spring2019/EnsembleNonlinear/KyleSteveGreg/Kyle_Steve_Greg_Ensemble_Nonlinear/samples/kick.wav" => buf2.read;
-"/Users/apple/Documents_Local/RPI/Spring2019/EnsembleNonlinear/KyleSteveGreg/Kyle_Steve_Greg_Ensemble_Nonlinear/samples/snare.wav" => buf3.read;
+"/Users/everek/Documents/GitHub/Kyle_Steve_Greg_Ensemble_Nonlinear/samples/hat.wav" => buf1.read;
+"/Users/everek/Documents/GitHub/Kyle_Steve_Greg_Ensemble_Nonlinear/samples/kick.wav" => buf2.read;
+"/Users/everek/Documents/GitHub/Kyle_Steve_Greg_Ensemble_Nonlinear/samples/snare.wav" => buf3.read;
 
 
 fun void inst(int note){

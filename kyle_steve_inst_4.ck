@@ -4,7 +4,7 @@ OscIn oin;
 // create our OSC message
 OscMsg msg;
 // use port 6449
-6449 => oin.port;
+6666 => oin.port;
 // create an address in the receiver
 oin.addAddress( "/playerNumber, f" );
 
@@ -16,7 +16,7 @@ fun void inst(int note){
 	SinOsc sin => ADSR adsr => dac;
 	
 	int counter;
-	0.3 => sin.gain;
+	0.1 => sin.gain;
 	//20 => sin.lfoSpeed;
 	//0.5 => sin.lfoDepth;
 	
