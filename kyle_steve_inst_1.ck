@@ -22,7 +22,7 @@ fun void inst(int note){
 	
 	////////ADSR ENVELOPE PARAMETERS////////
 	
-	500::ms => dur attack;
+	100::ms => dur attack;
 	200::ms => dur decay;
 	0.65 => float sustain;
 	2000::ms => dur release;
@@ -31,11 +31,11 @@ fun void inst(int note){
 	
 	////////OUR SCALE/////////
 	
-	[52,59,68,62,78,72] @=> int myscale[];
-	
+	[65, 67, 70, 72, 75, 77] @=> int myscale[];
 	1500::ms => dur noteLength;
 	
-	Std.mtof(myscale[note]) => rhode.freq;
+	Math.random2(0,1) => int rando;
+	Std.mtof(myscale[note+rando] +2) => rhode.freq;
 	0.5 => rhode.noteOn;
 	
 	adsr.keyOn();

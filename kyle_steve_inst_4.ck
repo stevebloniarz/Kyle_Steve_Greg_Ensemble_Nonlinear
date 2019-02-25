@@ -1,4 +1,4 @@
-//////// INST 1 = sinS ////////
+//////// INST 1 = mandS ////////
 ////////OSC CONFIG////////
 OscIn oin;
 // create our OSC message
@@ -13,37 +13,44 @@ oin.addAddress( "/playerNumber, f" );
 
 fun void inst(int note){
 	////////INSTRUMENT PARAMETERS/////////
-	SinOsc sin => ADSR adsr => dac;
+	Mandolin mand => ADSR adsr => dac;
 	
 	int counter;
-	0.3 => sin.gain;
-	//20 => sin.lfoSpeed;
-	//0.5 => sin.lfoDepth;
+	//0.3 => mand.gain;
+	//20 => mand.lfoSpeed;
+	//0.5 => mand.lfoDepth;
+	
+	0.25 => mand.bodySize;
+	0.5 => mand.pluckPos;
+	0.5 => mand.stringDamping;
+	0 => mand.stringDetune;
+	0.8 => mand.pluck;
 	
 	////////ADSR ENVELOPE PARAMETERS////////
 	
-	500::ms => dur attack;
-	200::ms => dur decay;
+	100::ms => dur attack;
+	100::ms => dur decay;
 	0.65 => float sustain;
-	1000::ms => dur release;
+	100::ms => dur release;
 	
-	adsr.set(attack, decay, sustain, release);
+	//adsr.set(attack, decay, sustain, release);
 	
 	////////OUR SCALE/////////
 	
-	[52,59,68,62,78,72] @=> int myscale[];
-	
+	//[52,59,68,62,78,72] @=> int myscale[];
+	[60, 65, 63, 67, 72, 77] @=> int myscale[];
 	1500::ms => dur noteLength;
 	
-	Std.mtof(myscale[note] - 24) => sin.freq;
-	//0.5 => sin.noteOn;
+	Math.random2(0,1) => int rando;
+	Std.mtof(myscale[note+rando] - 24) => mand.freq;
+	//0.5 => mand.noteOn;
 	
 	adsr.keyOn();
 	
 	
-	//sin.noteOff();
+	//mand.noteOff();
 	700::ms => now;
-	//sin.noteOff();
+	//mand.noteOff();
 	adsr.keyOff();
 	1000::ms => now;
 }
@@ -66,11 +73,11 @@ while(true){
 		} 
 		else if (playtog == 11)
 		{
-			spork ~ inst(1);
+			spork ~ inst(2);
 		}
 		else if (playtog == 12)
 		{
-			spork ~ inst(2);
+			spork ~ inst(4);
 		}
 		
 		1::ms => now;
@@ -83,8 +90,8 @@ while(true){
 
 ////////CODE TO LOOP THRU THE SCALE FOR SAVEKEEPING////////
 
-Std.mtof(myscale[counter]) => sin.freq;
-0.5 => sin.noteOn;
+Std.mtof(myscale[counter]) => mand.freq;
+0.5 => mand.noteOn;
 adsr.keyOn();
 
 100::ms => now;
@@ -93,6 +100,6 @@ adsr.keyOff();
 
 //300::ms => now;
 
-(counter + 1)%8 => counter; //using modulus to prevent index crashing, loop thru scale
+(counter + 1)%8 => counter; //umandg modulus to prevent index crashing, loop thru scale
 
 */

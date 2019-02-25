@@ -39,11 +39,11 @@ fun void inst(int note){
 	
 	////////OUR SCALE/////////
 	
-	[52,59,68,62,78,72] @=> int myscale[];
-	
+	[55, 58, 60, 63, 65, 67] @=> int myscale[];
 	5000::ms => dur noteLength;
 	
-	Std.mtof(myscale[note]+12) => wurl.freq;
+	Math.random2(0,1) => int rando;
+	Std.mtof(myscale[note+rando] +12) => wurl.freq;
 	0.5 => wurl.noteOn;
 	
 	0 => int i;
