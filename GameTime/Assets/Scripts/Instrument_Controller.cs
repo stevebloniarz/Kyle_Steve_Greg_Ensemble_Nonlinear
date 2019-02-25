@@ -5,6 +5,8 @@ using UnityEngine;
 public class Instrument_Controller : MonoBehaviour
 {
 	public List<GameObject> instruments = new List<GameObject>();
+	public Material temp_material;
+	public Material chosen;
 	private Metronome current_instrument;
 	private float travel_time = 1f;
 	private float offset_factor = 0.125f;
@@ -14,6 +16,8 @@ public class Instrument_Controller : MonoBehaviour
     void Start()
     {
         current_instrument = instruments[index].GetComponent<Metronome>();
+		temp_material = instruments[index].GetComponent<Renderer>().material;
+		instruments[index].GetComponent<Renderer>().material = chosen;
     }
 
     // Update is called once per frame
@@ -47,20 +51,41 @@ public class Instrument_Controller : MonoBehaviour
 		
 		//choose instrument
 		if (Input.GetKeyDown("up")){
-			if (index == 2){
+			instruments[index].GetComponent<Renderer>().material = temp_material;
+			if (index == 11){
 				index = 0;
 			} else {
 				index += 1;
 			}
+			Renderer temp_render = instruments[index].GetComponent<Renderer>();
+			temp_material = temp_render.material;
+			temp_render.material = chosen;
+			
 			current_instrument = instruments[index].GetComponent<Metronome>();
 		}
 		if (Input.GetKeyDown("down")){
+			instruments[index].GetComponent<Renderer>().material = temp_material;
 			if (index == 0){
-				index = 2;
+				index = 11;
 			} else {
 				index -= 1;
 			}
+			Renderer temp_render = instruments[index].GetComponent<Renderer>();
+			temp_material = temp_render.material;
+			temp_render.material = chosen;
 			current_instrument = instruments[index].GetComponent<Metronome>();
+		}
+		
+		if (Input.GetKeyDown("g")){
+			instruments[index].SetActive(!instruments[index].activeInHierarchy);
+		}
+		
+		if (Input.GetKeyDown("r")){
+			foreach (GameObject i in instruments){
+				Metronome temp = i.GetComponent<Metronome>();
+				//do math
+				//temp.travel_time = current_instrument.travel_time
+			}
 		}
     }
 }

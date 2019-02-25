@@ -49,6 +49,12 @@ public class OSCManager {
 	{
 		Debug.Log ("parseOscMessage: " + message.Address);
 
+		/*
+		/pi/key i i i s s s
+		switch(message.Address)
+		*/
+
+
 		switch (message.Address)
 		{
 		case "/roll-a-ball":    
