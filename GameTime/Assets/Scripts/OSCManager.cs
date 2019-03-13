@@ -12,6 +12,7 @@ public class OSCManager {
 	public UDPReceiver udpReceiver;
 
 	public GameObject myPlayer;
+	public List<Instrument_Controller> controllers = new List<Instrument_Controller>();
 	PlayerController myPlayerController;
 
 	public int Port { get; private set; }
@@ -29,6 +30,11 @@ public class OSCManager {
 		udpReceiver.MessageReceived += handlerOscMessageReceived;
 		udpReceiver.ErrorOccured += handlerOscErrorOccured;
 
+		controllers.Add(GameObject.Find("Instrument Controller 1").GetComponent<Instrument_Controller>());
+		controllers.Add(GameObject.Find("Instrument Controller 2").GetComponent<Instrument_Controller>());
+		controllers.Add(GameObject.Find("Instrument Controller 3").GetComponent<Instrument_Controller>());
+		controllers.Add(GameObject.Find("Instrument Controller 4").GetComponent<Instrument_Controller>());
+		
 		//myPlayer = GameObject.Find("Player");
 		//myPlayerController = (PlayerController)myPlayer.GetComponent<PlayerController>();
 	}
@@ -48,39 +54,29 @@ public class OSCManager {
 	private void parseOscMessage(OscMessage message)
 	{
 		Debug.Log ("parseOscMessage: " + message.Address);
-
-		/*
-		/pi/key i i i s s s
-		switch(message.Address)
-		*/
-
+		//Debug.Log(message);
+		
+		// /pi/key i i i s s s
+		
+		int playerid, asciikey;
 
 		switch (message.Address)
 		{
-		case "/roll-a-ball":    
+		case "/pi/key":    
 			if (message.Data.Count == 0) return;
 
-			var command = message.Data[0].ToString();
-
-			switch (command) 
-			{
-			case "jump":
-				var jumpValue = (int)message.Data [1];
-				//Debug.Log ("jump: " + jumpValue);
-				callPlayerJump (jumpValue);
-				break;
-			case "set":
-				if (message.Data.Count < 4) return;
-				var id = (int)message.Data[1];
-				var xPos = (float)message.Data[2];
-				var yPos = (float)message.Data[3];
-				break;
-			case "fseq":
-				if (message.Data.Count < 2) return;
-				//if (OnData != null) OnData(this, new OSCEventArgs(message.Data));
-				if (OnData != null) OnData(this, new OSCEventArgs(message.Data.ToString()));
-				break;
-			}
+			int.TryParse(message.Data[0].ToString(), out asciikey);
+			int.TryParse((message.Data[4].ToString())[9].ToString(), out playerid);
+			Debug.Log(asciikey);
+			
+			//this is a testing line
+			//int.TryParse(message.Data[1].ToString(), out playerid);
+			
+			
+			controllers[playerid-5].OSCUpdate(asciikey);
+			
+			
+			
 			break;
 		}
 	}
@@ -92,7 +88,7 @@ public class OSCManager {
 
 	private void handlerOscMessageReceived(object sender, OscMessageReceivedEventArgs oscMessageReceivedEventArgs)
 	{
-		//Debug.Log("OSCManager:messagereceived");
+		Debug.Log("OSCManager:messagereceived");
 
 		parseOscMessage(oscMessageReceivedEventArgs.Message);
 	}

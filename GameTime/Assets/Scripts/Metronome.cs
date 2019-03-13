@@ -12,6 +12,7 @@ public class Metronome : MonoBehaviour
 	public float current_time;
 	private float temp_time;
 	private float offset_factor;
+	public bool moving = true;
 	
     // Start is called before the first frame update
     void Start()
@@ -25,10 +26,11 @@ public class Metronome : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		current_time += Time.time - temp_time;
+		if (moving){
+			current_time += Time.time - temp_time;
+		}
 		temp_time = Time.time;
 		float lerp_factor = Mathf.Min((current_time - initial_time)/travel_time, 1);
-		
 		//Debug.Log(current_time);
 		transform.position = Vector3.Lerp (start.position, end.position, lerp_factor);
 		

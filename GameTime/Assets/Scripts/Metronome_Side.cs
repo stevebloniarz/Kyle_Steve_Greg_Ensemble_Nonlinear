@@ -27,7 +27,6 @@ public class Metronome_Side : MonoBehaviour
 	
 	void OnCollisionEnter(Collision col){
 		//GetComponent<AudioSource>().Play();
-		Debug.Log(col.gameObject.name);
 		if(col.gameObject.name == "Instrument1"){
 			myOSCScript.SendContact(1.0f);
 		}

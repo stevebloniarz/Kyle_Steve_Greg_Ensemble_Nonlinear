@@ -84,7 +84,7 @@ public class UDPSend : MonoBehaviour
        
         // define
         IP="127.0.0.1";
-        port=6666;
+        port=7000;
        
         // ----------------------------
         // Senden
@@ -95,6 +95,7 @@ public class UDPSend : MonoBehaviour
         // status
         print("Sending to "+IP+" : "+port);
         print("Testing: nc -lu "+IP+" : "+port);
+		sendString("testing this");
    
     }
  
